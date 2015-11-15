@@ -25,13 +25,19 @@ public interface Server {
 
     List<Group> getGroups();
 
-    //List<VoiceGroupImpl> getVoiceGroups();
+    List<VoiceGroupImpl> getVoiceGroups();
 
     void kick(String user);
 
     void ban(String user);
 
+    void kick(GroupUser user);
+
+    void ban(GroupUser user);
+
     void bc(String message);
 
     Group getGroupById(String id);
+
+    boolean canTalk();
 }

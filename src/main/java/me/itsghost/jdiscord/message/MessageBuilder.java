@@ -21,6 +21,21 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder addBold(String text){
+        sb.append("*" +  text + "*");
+        return this;
+    }
+
+    public MessageBuilder addCode(String text){
+        sb.append("`" +  text + "`");
+        return this;
+    }
+
+    public MessageBuilder addItalic(String text){
+        sb.append("_" +  text + "_");
+        return this;
+    }
+
     public MessageBuilder addUserTag(GroupUser user, Group server) {
         return addUserTag(user.getUser().getUsername(), server);
     }

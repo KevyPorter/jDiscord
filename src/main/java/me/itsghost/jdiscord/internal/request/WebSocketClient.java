@@ -4,7 +4,10 @@ package me.itsghost.jdiscord.internal.request;
 import me.itsghost.jdiscord.internal.impl.AccountManagerImpl;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
+import me.itsghost.jdiscord.internal.impl.ServerImpl;
+import me.itsghost.jdiscord.internal.impl.VoiceGroupImpl;
 import me.itsghost.jdiscord.internal.request.poll.*;
+import org.java_websocket.WebSocketImpl;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 
@@ -138,6 +141,26 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
                 case "GUILD_MEMBER_UPDATE":
                     deletePoll.process(key, obj, server);
                     break;
+                case "VOICE_STATE_UPDATE":
+                    try{
+                        //The longest password token is shared with the public...
+                        //Nice fucking work discord team.
+                        if (key.getString("user_id").equals(api.getSelfInfo().getId())){
+                            VoiceGroupImpl voice = api.getVoiceGroupById(key.getString("channel_id"));
+                            voice.setSession(key.getString("session_id"));
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                case "VOICE_SERVER_UPDATE":
+                    try{
+                        ((ServerImpl)server).setToken(key.getString("token"));
+                        ((ServerImpl)server).setServer(key.getString("endpoint"));
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
                 default:
                     api.log("Unknown type " + type + "\n >" + obj);
                     break;
@@ -161,6 +184,10 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     public void stop() {
         this.close();
         ((ReadyPoll)readyPoll).stop();
+    }
+
+    public void send(JSONObject obj){
+        this.send(obj.toString());
     }
 
 }

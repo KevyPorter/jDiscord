@@ -1,6 +1,7 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.OnlineStatus;
+import me.itsghost.jdiscord.Role;
 import me.itsghost.jdiscord.internal.impl.*;
 import me.itsghost.jdiscord.SelfData;
 import me.itsghost.jdiscord.Server;
@@ -87,7 +88,7 @@ public class ReadyPoll implements Poll {
         }
     }
 
-    public List<GroupUser> getGroupUsersFromJson(JSONObject obj, Map<String, String> roles) {
+    public List<GroupUser> getGroupUsersFromJson(JSONObject obj, List<Role> roles) {
         JSONArray members = obj.getJSONArray("members");
         List<GroupUser> guList = new ArrayList<>();
 
@@ -110,10 +111,15 @@ public class ReadyPoll implements Poll {
                 userImpl.setAvatar(user.isNull("avatar") ? "" : "https://cdn.discordapp.com/avatars/" + id + "/" + avatarId + ".jpg");
             }
 
-            if (item.getJSONArray("roles").length() > 0)
-                    role = roles.get(item.getJSONArray("roles").opt(0));
+            List<Role> rolesA = new ArrayList<>();
 
-            guList.add(new GroupUser(userImpl, role, dis));
+            if (item.getJSONArray("roles").length() > 0)
+                for (Role roleV : roles)
+                    if (roleV.getId().equals(item.getJSONArray("roles").opt(0)))
+                        rolesA.add(roleV);
+
+
+            guList.add(new GroupUser(userImpl, rolesA, dis));
         }
         return guList;
     }
@@ -134,11 +140,17 @@ public class ReadyPoll implements Poll {
         return users;
     }
 
-    public HashMap<String, String> getRoles(JSONArray rolesArray){
-        HashMap<String, String> roles = new HashMap<>();
+    public List<Role> getRoles(JSONArray rolesArray){
+        List<Role> roles = new ArrayList<>();
+
         for (int i = 0; i < rolesArray.length(); i++) {
             JSONObject roleObj = rolesArray.getJSONObject(i);
-            roles.put(roleObj.getString("id"), roleObj.getString("name"));
+            Map<String, Integer> perms = new HashMap<>();
+            perms.put("allow", roleObj.getInt("permissions"));
+            roles.add(new Role(roleObj.getString("name"),
+                    roleObj.getString("id"),
+                    roleObj.isNull("color") ? null : "#" + String.valueOf(roleObj.getInt("color")),
+                    perms));
         }
         return roles;
     }
@@ -153,6 +165,8 @@ public class ReadyPoll implements Poll {
             server.setLocation(item.getString("region"));
             server.setCreatorId(item.getString("owner_id"));
             server.setAvatar(item.isNull("icon") ? "" : "https://cdn.discordapp.com/icons/" + server.getId() + "/" + item.getString("icon") + ".jpg");
+            server.setRoleMeta(item.getJSONArray("roles"));
+            server.setRoles(getRoles(item.getJSONArray("roles")));
 
             List<GroupUser> users = getGroupUsersFromJson(item, getRoles(item.getJSONArray("roles")));
             users = updateOnlineStatus(users, item.getJSONArray("presences"));
@@ -162,12 +176,27 @@ public class ReadyPoll implements Poll {
             JSONArray channels = item.getJSONArray("channels");
             for (int ia = 0; ia < channels.length(); ia++) {
                 JSONObject channel = channels.getJSONObject(ia);
-
                 if (!channel.getString("type").equals("text")){
                     VoiceGroupImpl group = new VoiceGroupImpl(channel.getString("id"), channel.getString("name"), server, api);
                     server.getVoiceGroups().add(group);
                 }else {
-                    GroupImpl group = new GroupImpl(channel.getString("id"), channel.getString("id"), server, api);
+                    GroupImpl group = new GroupImpl(channel.getString("id"),
+                            channel.getString("id"),
+                            server,
+                            api);
+
+
+                    JSONArray permsOver = channel.getJSONArray("permission_overwrites");
+                    for (int iaa = 0; iaa < permsOver.length(); iaa++) {
+                        JSONObject permKey = permsOver.getJSONObject(iaa);
+                        if (permKey.getString("type").equals("member")){
+                            Map<String, Integer> a = new HashMap<>();
+                            a.put("allow", permKey.getInt("allow"));
+                            a.put("deny", permKey.getInt("deny"));
+                            group.getPermsOverride().put(permKey.getString("id"), a);
+                             }
+                    }
+
                     group.setName(channel.getString("name"));
                     server.getGroups().add(group);
                 }

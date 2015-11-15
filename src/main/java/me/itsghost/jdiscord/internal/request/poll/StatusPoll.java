@@ -45,6 +45,7 @@ public class StatusPoll implements Poll {
 
         }catch(Exception e){
             api.log("Failed to process message:\n >" + content);
+            System.out.println("Server: " + server);
             e.printStackTrace();
         }
     }

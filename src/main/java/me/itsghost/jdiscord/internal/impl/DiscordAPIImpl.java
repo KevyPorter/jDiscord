@@ -113,10 +113,10 @@ public class DiscordAPIImpl implements DiscordAPI {
 
 
     public VoiceGroupImpl getVoiceGroupById(String id){
-       // for (Server server : availableServers)
-       //     for (VoiceGroupImpl channel : server.getVoiceGroups())
-       //         if (channel.getId().equals(id))
-       //             return channel;
+        for (Server server : availableServers)
+            for (VoiceGroupImpl channel : server.getVoiceGroups())
+                if (channel.getId().equals(id))
+                    return channel;
         return null;
     }
 

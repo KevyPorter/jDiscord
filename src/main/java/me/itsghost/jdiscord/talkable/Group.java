@@ -16,4 +16,6 @@ public interface Group {
     Message sendMessage(String message);
 
     Message sendMessage(Message message);
+
+    void typing();
 }

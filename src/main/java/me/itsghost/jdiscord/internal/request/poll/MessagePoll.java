@@ -1,5 +1,6 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
+import me.itsghost.jdiscord.Role;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.UserChatEvent;
@@ -9,6 +10,9 @@ import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MessagePoll implements Poll {
     private DiscordAPIImpl api;
@@ -20,6 +24,9 @@ public class MessagePoll implements Poll {
     @Override
     public void process(JSONObject content, JSONObject rawRequest, Server server) {
         try {
+            if (content.isNull("author"))
+                return; //image update event?
+
             String id = content.getString("channel_id");
             String authorId = content.getJSONObject("author").getString("id");
 
@@ -29,7 +36,7 @@ public class MessagePoll implements Poll {
             group = (group == null) ? api.getGroupById(authorId) : group;
             user = (user == null) ? api.getBlankUser() : user;
 
-            String msgContent = StringEscapeUtils.unescapeJson(content.getString("content"));
+            String msgContent = (content.isNull("proxy_url") ? StringEscapeUtils.unescapeJson(content.getString("content")) : content.getJSONObject("embeds").getString("url"));
             String msgId = content.getString("id");
 
             MessageImpl msg = new MessageImpl(msgContent, msgId, id, api);
@@ -38,11 +45,12 @@ public class MessagePoll implements Poll {
             if (!content.isNull("edited_timestamp"))
                 msg.setEdited(true);
 
-            GroupUser gUser = (group.getServer() == null) ? new GroupUser(user, "User", user.getId()) : group.getServer().getGroupUserById(authorId);
+            GroupUser gUser = (group.getServer() == null) ? new GroupUser(user, new ArrayList<>(Arrays.asList(new Role("User", "User", null))), user.getId()) : group.getServer().getGroupUserById(authorId);
 
             api.getEventManager().executeEvent(new UserChatEvent(group, gUser, msg));
         }catch(Exception e){
-            api.log("Failed to process message:\n >" + content);
+            e.printStackTrace();
+            //api.log("Failed to process message:\n >" + content);
         }
     }
 }

@@ -16,11 +16,14 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GroupImpl implements Group, Talkable {
     @Getter @Setter private String cid;
     @Getter @Setter private String id;
     @Getter @Setter private String name;
+    @Getter private Map<String, Map<String, Integer>> permsOverride = new HashMap<>();
     private DiscordAPIImpl api;
     private Server server;
 
@@ -77,6 +80,17 @@ public class GroupImpl implements Group, Talkable {
             return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, api);
 
         return message;
+    }
+
+    @Override
+    public void typing() {
+        if ((server == null) || (cid == null))
+            updateId();
+
+        PacketBuilder pb = new PacketBuilder(api);
+        pb.setType(RequestType.POST);
+        pb.setUrl("https://discordapp.com/api/channels/" + id + "/typing");
+        pb.makeRequest();
     }
 
     private JSONObject getLocalAuthor() {

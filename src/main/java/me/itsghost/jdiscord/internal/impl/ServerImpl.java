@@ -2,12 +2,15 @@ package me.itsghost.jdiscord.internal.impl;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.itsghost.jdiscord.Role;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.internal.httprequestbuilders.PacketBuilder;
 import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
 import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;
+import org.json.JSONArray;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,8 @@ public class ServerImpl implements Server {
     @Getter @Setter private List<GroupUser> connectedClients = new ArrayList<>();
     @Getter @Setter private List<Group> groups = new ArrayList<>();
     @Getter @Setter private List<VoiceGroupImpl> voiceGroups = new ArrayList<>();
+    @Getter @Setter private JSONArray roleMeta;
+    @Getter @Setter private List<Role> roles;
 
     private DiscordAPIImpl api;
 
@@ -82,6 +87,26 @@ public class ServerImpl implements Server {
         pb.makeRequest();
     }
 
+    @Override
+    public void kick(GroupUser user) {
+        PacketBuilder pb = new PacketBuilder(api);
+        pb.setUrl("https://discordapp.com/api/guilds/" + id + "/members/" + user.getUser().getId());
+        pb.setType(RequestType.DELETE);
+        pb.makeRequest();
+    }
+
+    @Override
+    public void ban(GroupUser user) {
+        PacketBuilder pb = new PacketBuilder(api);
+        pb.setUrl("https://discordapp.com/api/guilds/" + id + "/bans/" + user.getUser().getId() + "?delete-message-days=0");
+        pb.setType(RequestType.PUT);
+        pb.makeRequest();
+    }
+
+    @Override
+    public boolean canTalk() {
+        throw new NotImplementedException();
+    }
 
     public void updateUser(GroupUser user) {
         ArrayList<GroupUser> users = new ArrayList<>();
