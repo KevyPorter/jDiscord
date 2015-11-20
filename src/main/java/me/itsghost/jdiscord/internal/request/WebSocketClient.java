@@ -17,39 +17,12 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     public boolean loaded = false;
     protected Thread thread;
     private DiscordAPIImpl api;
-    private String server;
     private Poll readyPoll;
-    private Poll banPoll;
-    private Poll addUserPoll;
-    private Poll messagePoll;
-    private Poll kickedPoll;
-    private Poll typingPoll;
-    private Poll newContactOrGroupPoll;
-    private Poll statusPoll;
-    private Poll updateSettings;
-    private Poll channelRemovePoll;
-    private Poll channelUpdatePoll;
-    private Poll guildAddPoll;
-    private Poll userUpdatePoll;
-    private Poll deletePoll;
 
     public WebSocketClient(DiscordAPIImpl api, String url) {
         super(URI.create(url.replace("wss", "ws"))); //this api doesn't like wss
         this.api = api;
         readyPoll = new ReadyPoll(api);
-        banPoll = new BanPoll(api);
-        addUserPoll = new AddUserPoll(api);
-        messagePoll = new MessagePoll(api);
-        kickedPoll = new KickPoll(api);
-        typingPoll = new TypingPoll(api);
-        newContactOrGroupPoll = new NewContactOrGroupPoll(api);
-        statusPoll = new StatusPoll(api);
-        updateSettings = new UpdateSettings(api);
-        channelRemovePoll = new ChannelRemove(api);
-        channelUpdatePoll = new ChannelUpdatePoll(api);
-        guildAddPoll = new GuildAdd(api);
-        userUpdatePoll = new UserUpdatePoll(api);
-        deletePoll = new DeleteMessagePoll(api);
         this.connect();
     }
 
@@ -61,7 +34,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        if ((code == 1000) && (server != null)) {
+        if ((code == 1000)) {
             api.log("Your data is on a different server");
             api.log("This error is deprecated... if you're seening this, report it.");
         }
@@ -96,50 +69,50 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
                     api.log("Successfully loaded user data!");
                     break;
                 case "GUILD_MEMBER_ADD":
-                    addUserPoll.process(key, obj, server);
+                    new AddUserPoll(api).process(key, obj, server);
                     break;
                 case "GUILD_MEMBER_REMOVE":
-                    kickedPoll.process(key, obj, server);
+                    new KickPoll(api).process(key, obj, server);
                     break;
                 case "GUILD_BAN_ADD":
-                    banPoll.process(key, obj, server);
+                    new BanPoll(api).process(key, obj, server);
                     break;
                 case "GUILD_BAN_REMOVE":
                     //processBan(key, server);
                     //Unban?
                     break;
                 case "MESSAGE_CREATE":
-                    messagePoll.process(key, obj, server);
+                    new MessagePoll(api).process(key, obj, server);
                     break;
                 case "MESSAGE_UPDATE":
-                    messagePoll.process(key, obj, server);
+                    new MessagePoll(api).process(key, obj, server);
                     break;
                 case "TYPING_START":
-                    typingPoll.process(key, obj, server);
+                    new TypingPoll(api).process(key, obj, server);
                     break;
                 case "CHANNEL_CREATE":
-                    newContactOrGroupPoll.process(key, obj, server);
+                    new NewContactOrGroupPoll(api).process(key, obj, server);
                     break;
                 case "PRESENCE_UPDATE":
-                    statusPoll.process(key, obj, server);
+                    new StatusPoll(api).process(key, obj, server);
                     break;
                 case "USER_UPDATE":
-                    updateSettings.process(key, obj, server);
+                    new UpdateSettings(api).process(key, obj, server);
                     break;
                 case "CHANNEL_DELETE":
-                    channelRemovePoll.process(key, obj, server);
+                    new ChannelRemove(api).process(key, obj, server);
                     break;
                 case "CHANNEL_UPDATE":
-                    channelUpdatePoll.process(key, obj, server);
+                    new ChannelUpdatePoll(api).process(key, obj, server);
                     break;
                 case "GUILD_CREATE":
-                    guildAddPoll.process(key, obj, server);
+                    new GuildAdd(api).process(key, obj, server);
                     break;
                 case "MESSAGE_DELETE":
-                    userUpdatePoll.process(key, obj, server);
+                    new UserUpdatePoll(api).process(key, obj, server);
                     break;
                 case "GUILD_MEMBER_UPDATE":
-                    deletePoll.process(key, obj, server);
+                    new DeleteMessagePoll(api).process(key, obj, server);
                     break;
                 case "VOICE_STATE_UPDATE":
                     try{
