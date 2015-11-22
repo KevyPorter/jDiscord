@@ -95,7 +95,8 @@ public class PacketBuilder {
                 wr.close();
             }
             code = con.getResponseCode();
-            if (code == 200 || code == 201 || code == 404) {
+            System.out.println(url + code);
+            if (code == 200 || code == 201 || code == 404 || code == 400) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 String inputLine;
                 StringBuffer response = new StringBuffer();
@@ -121,6 +122,8 @@ public class PacketBuilder {
             }
 
         } catch (Exception e) {
+            if ((url.equals("https://discordapp.com/api/auth/login")) && (code == 400))
+                return "{}";
             return null;
         }
     }
