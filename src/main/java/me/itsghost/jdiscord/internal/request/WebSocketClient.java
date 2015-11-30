@@ -107,10 +107,10 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
                     new GuildAdd(api).process(key, obj, server);
                     break;
                 case "MESSAGE_DELETE":
-                    new UserUpdatePoll(api).process(key, obj, server);
+                    new DeleteMessagePoll(api).process(key, obj, server);
                     break;
                 case "GUILD_MEMBER_UPDATE":
-                    new DeleteMessagePoll(api).process(key, obj, server);
+                    new UserUpdatePoll(api).process(key, obj, server);
                     break;
                 case "VOICE_STATE_UPDATE":
                     try{
