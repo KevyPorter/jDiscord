@@ -1,13 +1,11 @@
 package me.itsghost.jdiscord.internal.request;
 
 
-import me.itsghost.jdiscord.internal.impl.AccountManagerImpl;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.internal.impl.ServerImpl;
 import me.itsghost.jdiscord.internal.impl.VoiceGroupImpl;
 import me.itsghost.jdiscord.internal.request.poll.*;
-import org.java_websocket.WebSocketImpl;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 

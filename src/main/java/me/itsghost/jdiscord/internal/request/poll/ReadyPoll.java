@@ -25,6 +25,10 @@ public class ReadyPoll implements Poll {
         this.api = api;
     }
 
+    /*
+        What the fuck happened here?
+     */
+
     @Override
     public void process(JSONObject content, JSONObject rawRequest, Server server) {
         if (api.isLoaded())
@@ -100,8 +104,6 @@ public class ReadyPoll implements Poll {
             String id = user.getString("id");
             String dis = String.valueOf(user.get("discriminator")); //Sometimes returns an int or string... just cast the obj to string
             String avatarId = (user.isNull("avatar") ? "" : user.getString("avatar"));
-
-            String role = "User";
             UserImpl userImpl;
 
             if (api.isUserKnown(id)) {
@@ -130,7 +132,7 @@ public class ReadyPoll implements Poll {
             for (GroupUser gUser : users){
                 User user = gUser.getUser();
                 if (user.equals(item.getJSONObject("user").getString("id"))){
-                    String game = item.isNull("game_id") ? "ready to play" : GameIdUtils.getGameFromId(item.getInt("game_id"));
+                    String game = item.isNull("game_id") ? "ready to play" : GameIdUtils.getGameFromId(item.get("game_id").toString()); //sometimes int sometimes string
                     OnlineStatus status = OnlineStatus.fromName(item.getString("status"));
                     ((UserImpl)user).setGame(game);
                     ((UserImpl)user).setOnlineStatus(status);

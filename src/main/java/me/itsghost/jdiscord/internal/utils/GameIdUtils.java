@@ -9,15 +9,17 @@ public class GameIdUtils {
 
     private  static String GAMEARRAY;
 
-    public static String getGameFromId(int id) {
-        JSONArray array = new JSONArray(getGameArray());
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject item = array.getJSONObject(i);
+    public static String getGameFromId(String id) {
+        if (id.matches("^-?\\d+$")) {
+            JSONArray array = new JSONArray(getGameArray());
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject item = array.getJSONObject(i);
 
-            if (item.getInt("id") == id)
-                return item.getString("name");
+                if (item.getInt("id") == Integer.valueOf(id))
+                    return item.getString("name");
+            }
         }
-        return "Unknown game";
+        return id;
     }
 
     private static String getGameArray(){

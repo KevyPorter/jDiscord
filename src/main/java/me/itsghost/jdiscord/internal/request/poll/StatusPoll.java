@@ -33,7 +33,7 @@ public class StatusPoll implements Poll {
 
             UserImpl user = (UserImpl)a.getServer().getGroupUserById(authorId).getUser();
 
-            String game = ((content.isNull("game_id")) || (content.get("game_id") == null)) ? "ready to play" : GameIdUtils.getGameFromId(content.getInt("game_id"));
+            String game = ((content.isNull("game_id")) || (content.get("game_id") == null)) ? "ready to play" : GameIdUtils.getGameFromId(content.get("game_id").toString());
             OnlineStatus status = OnlineStatus.fromName(content.getString("status"));
 
 
