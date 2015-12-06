@@ -22,7 +22,7 @@ public class MessageBuilder {
     }
 
     public MessageBuilder addBold(String text){
-        sb.append("*" +  text + "*");
+        sb.append("**" +  text + "**");
         return this;
     }
 
@@ -33,6 +33,21 @@ public class MessageBuilder {
 
     public MessageBuilder addItalic(String text){
         sb.append("_" +  text + "_");
+        return this;
+    }
+    
+    public MessageBuilder addUnderlined(String text){
+        sb.append("__" +  text + "__");
+        return this;
+    }
+    
+    public MessageBuilder addStrikethrough(String text){
+        sb.append("~~" +  text + "~~");
+        return this;
+    }
+    
+    public MessageBuilder addCodeBlock(String language, String text){
+        sb.append(String.format("```%s\n", language) +  text + "```");
         return this;
     }
 
