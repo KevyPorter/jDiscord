@@ -6,7 +6,6 @@ import me.itsghost.jdiscord.Role;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.internal.impl.GroupImpl;
 import me.itsghost.jdiscord.internal.impl.ServerImpl;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,9 +1,7 @@
 package me.itsghost.jdiscord;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

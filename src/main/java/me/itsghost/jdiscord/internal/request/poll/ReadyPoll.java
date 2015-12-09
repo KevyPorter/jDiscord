@@ -2,10 +2,10 @@ package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.OnlineStatus;
 import me.itsghost.jdiscord.Role;
-import me.itsghost.jdiscord.internal.impl.*;
 import me.itsghost.jdiscord.SelfData;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.APILoadedEvent;
+import me.itsghost.jdiscord.internal.impl.*;
 import me.itsghost.jdiscord.internal.utils.GameIdUtils;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;

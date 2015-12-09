@@ -1,10 +1,10 @@
 package me.itsghost.jdiscord.internal.request;
 
 import lombok.Getter;
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.exception.DiscordFailedToConnectException;
 import me.itsghost.jdiscord.internal.httprequestbuilders.PacketBuilder;
 import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import org.json.JSONObject;
 
 public class RequestManager {

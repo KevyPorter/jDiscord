@@ -3,7 +3,6 @@ package me.itsghost.jdiscord.internal.request.poll.voice;
 import me.itsghost.jdiscord.DiscordAPI;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.impl.VoiceGroupImpl;
-import org.java_websocket.WebSocketImpl;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
 
