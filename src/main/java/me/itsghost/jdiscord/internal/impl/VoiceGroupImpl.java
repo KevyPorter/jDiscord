@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import me.itsghost.jdiscord.DiscordAPI;
 import me.itsghost.jdiscord.Server;
-import me.itsghost.jdiscord.internal.voice.VoiceClientHandle;
 import me.itsghost.jdiscord.internal.request.WebSocketClient;
+import me.itsghost.jdiscord.internal.request.poll.voice.VoiceClientHandle;
 import org.json.JSONObject;
 
 public class VoiceGroupImpl {
