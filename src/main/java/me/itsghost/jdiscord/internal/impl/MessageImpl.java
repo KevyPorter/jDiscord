@@ -15,6 +15,7 @@ import org.json.JSONObject;
 public class MessageImpl implements Message {
     @Getter @Setter private String message;
     @Getter @Setter private String id;
+    @Getter @Setter private String timestamp;
     @Getter @Setter private User sender;
     @Getter @Setter private String groupId;
     @Getter @Setter private JSONArray mentions = new JSONArray();
