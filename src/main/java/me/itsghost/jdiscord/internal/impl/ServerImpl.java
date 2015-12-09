@@ -8,7 +8,6 @@ import me.itsghost.jdiscord.internal.httprequestbuilders.PacketBuilder;
 import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
 import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
-import me.itsghost.jdiscord.talkable.User;
 import org.json.JSONArray;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

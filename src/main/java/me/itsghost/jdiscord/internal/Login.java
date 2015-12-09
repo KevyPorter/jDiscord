@@ -1,11 +1,11 @@
 package me.itsghost.jdiscord.internal;
 
 import lombok.Data;
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.exception.BadUsernamePasswordException;
 import me.itsghost.jdiscord.exception.DiscordFailedToConnectException;
 import me.itsghost.jdiscord.internal.httprequestbuilders.PacketBuilder;
 import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.request.RequestManager;
 import me.itsghost.jdiscord.internal.request.WebSocketClient;
 import org.json.JSONObject;

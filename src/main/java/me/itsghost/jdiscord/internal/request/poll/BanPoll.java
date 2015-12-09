@@ -1,8 +1,8 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.UserBannedEvent;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import org.json.JSONObject;
 

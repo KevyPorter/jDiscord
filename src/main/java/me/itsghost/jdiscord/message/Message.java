@@ -21,4 +21,6 @@ public interface Message {
     void deleteMessage();
 
     void editMessage(String message);
+
+    String getTimestamp();
 }

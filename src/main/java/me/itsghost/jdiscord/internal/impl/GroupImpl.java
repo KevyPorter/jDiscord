@@ -8,13 +8,10 @@ import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
 import me.itsghost.jdiscord.message.Message;
 import me.itsghost.jdiscord.message.MessageHistory;
 import me.itsghost.jdiscord.talkable.Group;
-import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.Talkable;
-import me.itsghost.jdiscord.talkable.User;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,10 +45,7 @@ public class GroupImpl implements Group, Talkable {
 
     @Override
     public MessageHistory getMessageHistory() {
-        //if (api.getHistoryContainer().containsKey(id))
-        //    api.getHistoryContainer().put(id, new MessageHistory());
-        //return api.getHistoryContainer().get(id);
-        return null;
+        return new MessageHistory(api, this);
     }
 
     @Override

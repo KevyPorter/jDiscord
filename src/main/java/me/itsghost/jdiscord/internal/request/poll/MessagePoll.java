@@ -1,9 +1,9 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.Role;
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.UserChatEvent;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.impl.MessageImpl;
 import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
@@ -36,11 +36,16 @@ public class MessagePoll implements Poll {
             group = (group == null) ? api.getGroupById(authorId) : group;
             user = (user == null) ? api.getBlankUser() : user;
 
+            if(group == null) {
+                return; //bot started DM with other user - users dm id not saved anywhere yet
+            }
+
             String msgContent = (content.isNull("proxy_url") ? StringEscapeUtils.unescapeJson(content.getString("content")) : content.getJSONObject("embeds").getString("url"));
             String msgId = content.getString("id");
 
             MessageImpl msg = new MessageImpl(msgContent, msgId, id, api);
             msg.setSender(user);
+            msg.setTimestamp(content.getString("timestamp"));
 
             if (!content.isNull("edited_timestamp"))
                 msg.setEdited(true);
