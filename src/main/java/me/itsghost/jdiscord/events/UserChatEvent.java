@@ -17,4 +17,8 @@ public class UserChatEvent  {
     public Server getServer(){
         return group.getServer();
     }
+    
+    public boolean isDm(){
+    	return getServer() == null;
+    }
 }
