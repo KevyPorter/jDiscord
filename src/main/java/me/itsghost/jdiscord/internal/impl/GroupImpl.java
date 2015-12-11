@@ -70,8 +70,10 @@ public class GroupImpl implements Group, Talkable {
         pb.setUrl("https://discordapp.com/api/channels/" + id + "/messages");
 
         String a = pb.makeRequest();
-        if (a != null)
-            return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, api);
+        if (a != null){
+        	message.setId(new JSONObject(a).getString("id"));
+        	message.setGroupId(id);
+        }
 
         return message;
     }
