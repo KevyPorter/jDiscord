@@ -1,10 +1,12 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.Server;
+import me.itsghost.jdiscord.events.ChannelDeletedEvent;
 import me.itsghost.jdiscord.events.ChannelPermsUpdatedEvent;
 import me.itsghost.jdiscord.events.ChannelUpdatedEvent;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.impl.GroupImpl;
+import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ public class ChannelUpdatePoll implements Poll {
 
     @Override
     public void process(JSONObject content, JSONObject rawRequest, Server server){
+       /*
         GroupImpl group = (GroupImpl)server.getGroupById(content.getString("id"));
         if (content.isNull("permission_overwrites")) {
             group.setName(content.getString("name"));
@@ -44,5 +47,6 @@ public class ChannelUpdatePoll implements Poll {
             }
             api.getEventManager().executeEvent(new ChannelPermsUpdatedEvent(group));
         }
+        */
     }
 }

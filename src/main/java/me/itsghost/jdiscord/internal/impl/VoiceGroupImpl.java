@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import me.itsghost.jdiscord.DiscordAPI;
 import me.itsghost.jdiscord.Server;
+//import me.itsghost.jdiscord.internal.voice.VoiceClientHandle;
 import me.itsghost.jdiscord.internal.request.WebSocketClient;
-import me.itsghost.jdiscord.internal.request.poll.voice.VoiceClientHandle;
 import org.json.JSONObject;
 
 public class VoiceGroupImpl {
@@ -15,7 +15,7 @@ public class VoiceGroupImpl {
     @Getter private Server server;
     @Getter private WebSocketClient client;
     @Getter @Setter private String session;
-    @Getter private VoiceClientHandle voice;
+  //  @Getter private VoiceClientHandle voice;
     @Getter private String token;
     private DiscordAPI api;
 
@@ -52,7 +52,7 @@ public class VoiceGroupImpl {
                 try { Thread.sleep(750);} catch (Exception e) {}
             }
             token = ((ServerImpl) server).getToken();
-            voice = new VoiceClientHandle(api, ((ServerImpl) server).getServer(), a);
+     //       voice = new VoiceClientHandle(api, ((ServerImpl) server).getServer(), a);
         }
     }
 }

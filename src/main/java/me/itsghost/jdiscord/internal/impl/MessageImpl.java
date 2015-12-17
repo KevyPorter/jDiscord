@@ -2,6 +2,7 @@ package me.itsghost.jdiscord.internal.impl;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.itsghost.jdiscord.DiscordAPI;
 import me.itsghost.jdiscord.internal.httprequestbuilders.PacketBuilder;
 import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
 import me.itsghost.jdiscord.message.Message;
@@ -12,10 +13,12 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MessageImpl implements Message {
     @Getter @Setter private String message;
     @Getter @Setter private String id;
-    @Getter @Setter private String timestamp;
     @Getter @Setter private User sender;
     @Getter @Setter private String groupId;
     @Getter @Setter private JSONArray mentions = new JSONArray();
@@ -31,6 +34,10 @@ public class MessageImpl implements Message {
 
     public MessageImpl(String message) {
         this.message = message;
+    }
+    public MessageImpl(DiscordAPI api, String message) {
+        this.message = message;
+        this.api = (DiscordAPIImpl)api;
     }
 
     @Override
@@ -56,12 +63,21 @@ public class MessageImpl implements Message {
         pb.makeRequest();
     }
 
+    public List<GroupUser> getMentions(){
+        List<GroupUser> users = new ArrayList<>();
+        for (int i = 0; i < mentions.length(); i++){
+            JSONObject obj = (JSONObject)mentions.get(i);
+            users.add(api.getGroupById(groupId).getGroupUserById(obj.getString("id")));
+        }
+        return users;
+    }
+
     public void applyUserTag(String username, Group server) {
         GroupUser gp = server.getServer().getGroupUserByUsername(username);
         if (gp == null)
             return;
-        message = message.replace("@" + username, "<@" + gp.getUser().getId() + ">");
-        mentions.put(gp.getUser().toString());
+        //message = message.replace("@" + username, "<@" + gp.getUser().getId() + ">");
+        mentions.put(gp.getUser().getId());
     }
 
 }

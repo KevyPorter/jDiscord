@@ -5,6 +5,7 @@ import me.itsghost.jdiscord.events.AddedToServer;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.impl.GroupImpl;
 import me.itsghost.jdiscord.internal.impl.ServerImpl;
+import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import org.json.JSONArray;
 import org.json.JSONObject;

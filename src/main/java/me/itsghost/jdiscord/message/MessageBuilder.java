@@ -1,5 +1,6 @@
 package me.itsghost.jdiscord.message;
 
+import me.itsghost.jdiscord.DiscordAPI;
 import me.itsghost.jdiscord.internal.impl.MessageImpl;
 import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
@@ -35,21 +36,6 @@ public class MessageBuilder {
         sb.append("_" +  text + "_");
         return this;
     }
-    
-    public MessageBuilder addUnderlined(String text){
-        sb.append("__" +  text + "__");
-        return this;
-    }
-    
-    public MessageBuilder addStrikethrough(String text){
-        sb.append("~~" +  text + "~~");
-        return this;
-    }
-    
-    public MessageBuilder addCodeBlock(String language, String text){
-        sb.append(String.format("```%s\n", language) +  text + "```");
-        return this;
-    }
 
     public MessageBuilder addUserTag(GroupUser user, Group server) {
         return addUserTag(user.getUser().getUsername(), server);
@@ -72,8 +58,8 @@ public class MessageBuilder {
         return this;
     }
 
-    public Message build() {
-        MessageImpl message = new MessageImpl(sb.toString());
+    public Message build(DiscordAPI api) {
+        MessageImpl message = new MessageImpl(api, sb.toString());
         message.setMentions(mentions);
         return message;
     }

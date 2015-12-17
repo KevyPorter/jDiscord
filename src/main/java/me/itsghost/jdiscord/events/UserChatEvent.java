@@ -2,6 +2,7 @@ package me.itsghost.jdiscord.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.message.Message;
 import me.itsghost.jdiscord.talkable.Group;
@@ -16,9 +17,5 @@ public class UserChatEvent  {
 
     public Server getServer(){
         return group.getServer();
-    }
-    
-    public boolean isDm(){
-    	return getServer() == null;
     }
 }

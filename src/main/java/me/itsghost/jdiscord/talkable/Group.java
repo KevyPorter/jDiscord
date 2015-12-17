@@ -18,4 +18,6 @@ public interface Group {
     Message sendMessage(Message message);
 
     void typing();
+
+    GroupUser getGroupUserById(String id);
 }

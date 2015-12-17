@@ -1,7 +1,10 @@
 package me.itsghost.jdiscord.message;
 
 import me.itsghost.jdiscord.talkable.Group;
+import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;
+
+import java.util.List;
 
 public interface Message {
     String getMessage();
@@ -18,9 +21,9 @@ public interface Message {
 
     void applyUserTag(String username, Group server);
 
+    List<GroupUser> getMentions();
+
     void deleteMessage();
 
     void editMessage(String message);
-
-    String getTimestamp();
 }

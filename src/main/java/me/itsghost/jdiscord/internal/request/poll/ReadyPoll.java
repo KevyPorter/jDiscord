@@ -2,10 +2,10 @@ package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.OnlineStatus;
 import me.itsghost.jdiscord.Role;
+import me.itsghost.jdiscord.internal.impl.*;
 import me.itsghost.jdiscord.SelfData;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.APILoadedEvent;
-import me.itsghost.jdiscord.internal.impl.*;
 import me.itsghost.jdiscord.internal.utils.GameIdUtils;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;
@@ -117,11 +117,12 @@ public class ReadyPoll implements Poll {
 
             if (item.getJSONArray("roles").length() > 0)
                 for (Role roleV : roles)
-                    if (roleV.getId().equals(item.getJSONArray("roles").opt(0)))
+                    if (roleV.getId().equals(item.getJSONArray("roles").opt(0)) || (roleV.getName().equals("@everyone")))
                         rolesA.add(roleV);
 
-
-            guList.add(new GroupUser(userImpl, rolesA, dis));
+            GroupUser gu = new GroupUser(userImpl, dis);
+            gu.setRoles(rolesA);
+            guList.add(gu);
         }
         return guList;
     }
@@ -151,7 +152,7 @@ public class ReadyPoll implements Poll {
             perms.put("allow", roleObj.getInt("permissions"));
             roles.add(new Role(roleObj.getString("name"),
                     roleObj.getString("id"),
-                    roleObj.isNull("color") ? null : "#" + String.valueOf(roleObj.getInt("color")),
+                    roleObj.isNull("color") ? null : "#" + String.valueOf(roleObj.get("color")),
                     perms));
         }
         return roles;
@@ -186,19 +187,6 @@ public class ReadyPoll implements Poll {
                             channel.getString("id"),
                             server,
                             api);
-
-
-                    JSONArray permsOver = channel.getJSONArray("permission_overwrites");
-                    for (int iaa = 0; iaa < permsOver.length(); iaa++) {
-                        JSONObject permKey = permsOver.getJSONObject(iaa);
-                        if (permKey.getString("type").equals("member")){
-                            Map<String, Integer> a = new HashMap<>();
-                            a.put("allow", permKey.getInt("allow"));
-                            a.put("deny", permKey.getInt("deny"));
-                            group.getPermsOverride().put(permKey.getString("id"), a);
-                             }
-                    }
-
                     group.setName(channel.getString("name"));
                     server.getGroups().add(group);
                 }

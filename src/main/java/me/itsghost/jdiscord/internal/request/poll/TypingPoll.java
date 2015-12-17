@@ -1,9 +1,9 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.Role;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.UserTypingEvent;
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;
@@ -30,7 +30,7 @@ public class TypingPoll implements Poll {
         group = (group == null) ? api.getGroupById(authorId) : group;
         user = (user == null) ? api.getBlankUser() : user;
 
-        GroupUser gUser = (group.getServer() == null) ? new GroupUser(user, new ArrayList<>(Arrays.asList(new Role("User", "User",  null))), user.getId()) : group.getServer().getGroupUserById(authorId);
+        GroupUser gUser = (group.getServer() == null) ? new GroupUser(user, user.getId()) : group.getServer().getGroupUserById(authorId);
 
         api.getEventManager().executeEvent(new UserTypingEvent(group, gUser));
     }

@@ -3,23 +3,16 @@ package me.itsghost.jdiscord.talkable;
 import lombok.Getter;
 import lombok.Setter;
 import me.itsghost.jdiscord.Role;
-import me.itsghost.jdiscord.Server;
-import me.itsghost.jdiscord.internal.impl.GroupImpl;
-import me.itsghost.jdiscord.internal.impl.ServerImpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GroupUser {
     @Getter private User user;
     @Getter @Setter private List<Role> roles;
     @Getter private String discriminator;
 
-    public GroupUser(User user, List<Role> role, String discriminator) {
+    public GroupUser(User user, String discriminator) {
         this.user = user;
-        this.roles = role;
         this.discriminator = discriminator;
     }
 
@@ -27,35 +20,52 @@ public class GroupUser {
         return user.getUsername();
     }
 
-    public Map<String, Integer> getUserPerms(Group group){
-        GroupImpl a = (GroupImpl) group;
-        if (a.getPermsOverride().containsKey(user.getId())){
-            return a.getPermsOverride().get(user.getId());
-        }else{
-            List<Map<String, Integer>> combo = new ArrayList<>();
-            int allow = 0;
-            int deny = 0;
-            for (Role role : roles){
-                combo.add(role.getRole());
-            }
-            for (Map<String, Integer> key : combo){
-                int localAllow = key.get("allow");
-                int localDeny = key.containsKey("deny") ? key.get("deny") : 0;
-                allow = localAllow > allow ? localAllow : allow;
-                deny = localDeny > deny ? localDeny : deny;
-            }
-            Map<String, Integer> perms = new HashMap<>();
-            perms.put("allow", allow);
-            perms.put("deny", deny);
-            return perms;
-        }
+    public boolean equals(Object e) {
+        return user.equals(e);
     }
 
-    public Map<Role, Map<String, Integer>> getAllPerms(Server server){
-        Map<Role, Map<String, Integer>> e = new HashMap<>();
-        for (Role role : ((ServerImpl)server).getRoles()){
-            e.put(role, role.getRole());
+    public boolean hasPerm(Permissions perm) {
+        if (perm == null) return true;
+        for(Role r : getRoles()){
+            int allow = r.getRole().get("allow");
+            int offset = perm.getOffset();
+            if(((allow >> offset) & 1) == 1)
+                return true;
         }
-        return e;
+        return false;
     }
+
+    public enum Permissions {
+        INSTANT_INVITE(0),
+        KICK_MEMBER(1),
+        BAN_MEMBER(2),
+        MANAGE_ROLES(3),
+        MANAGE_CHANNELS(4),
+        MANAGE_SERVER(5),
+        READ_MESSAGES(10),
+        SEND_MESSAGES(11),
+        SEND_TTS_MESSAGES(12),
+        MANAGE_MESSAGES(13),
+        EMBED_LINKS(14),
+        ATTACH_FILES(15),
+        READ_MESSAGE_HISTORY(16),
+        MENTION_EVERYONE(17),
+        VOICE_CONNECT(20),
+        VOICE_SPEAK(21),
+        VOICE_MUTE_MEMBERS(22),
+        VOICE_DEAFEN_MEMBERS(23),
+        VOICE_MOVE_MEMBERS(24),
+        VOICE_USE_VAD(25);
+
+        int offset;
+
+        Permissions(int offset) {
+            this.offset = offset;
+        }
+
+        public int getOffset() {
+            return offset;
+        }
+        }
+
 }

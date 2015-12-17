@@ -1,9 +1,15 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.Server;
+import me.itsghost.jdiscord.events.UserChatEvent;
 import me.itsghost.jdiscord.events.UserDeletedMessageEvent;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
+import me.itsghost.jdiscord.internal.impl.MessageImpl;
+import me.itsghost.jdiscord.message.Message;
 import me.itsghost.jdiscord.talkable.Group;
+import me.itsghost.jdiscord.talkable.GroupUser;
+import me.itsghost.jdiscord.talkable.User;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
 
 public class DeleteMessagePoll implements Poll {

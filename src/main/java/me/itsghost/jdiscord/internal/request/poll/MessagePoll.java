@@ -1,14 +1,15 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.Role;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.UserChatEvent;
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.impl.MessageImpl;
 import me.itsghost.jdiscord.talkable.Group;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.User;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,26 +37,21 @@ public class MessagePoll implements Poll {
             group = (group == null) ? api.getGroupById(authorId) : group;
             user = (user == null) ? api.getBlankUser() : user;
 
-            if(group == null) {
-                return; //bot started DM with other user - users dm id not saved anywhere yet
-            }
-
             String msgContent = (content.isNull("proxy_url") ? StringEscapeUtils.unescapeJson(content.getString("content")) : content.getJSONObject("embeds").getString("url"));
             String msgId = content.getString("id");
 
             MessageImpl msg = new MessageImpl(msgContent, msgId, id, api);
             msg.setSender(user);
-            msg.setTimestamp(content.getString("timestamp"));
+            msg.setMentions(content.getJSONArray("mentions"));
 
             if (!content.isNull("edited_timestamp"))
                 msg.setEdited(true);
 
-            GroupUser gUser = (group.getServer() == null) ? new GroupUser(user, new ArrayList<>(Arrays.asList(new Role("User", "User", null))), user.getId()) : group.getServer().getGroupUserById(authorId);
+            GroupUser gUser = (group.getServer() == null) ? new GroupUser(user,  user.getId()) : group.getServer().getGroupUserById(authorId);
 
             api.getEventManager().executeEvent(new UserChatEvent(group, gUser, msg));
         }catch(Exception e){
-            e.printStackTrace();
-            //api.log("Failed to process message:\n >" + content);
+e.printStackTrace();
         }
     }
 }

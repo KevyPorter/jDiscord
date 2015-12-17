@@ -15,13 +15,18 @@ import org.json.JSONObject;
 import java.util.LinkedList;
 import java.util.List;
 
-@RequiredArgsConstructor
+
 public class MessageHistory {
-    private final DiscordAPIImpl api;
-    @Getter private final Group group;
+    private  DiscordAPIImpl api;
+    @Getter private  Group group;
     private String lastId = null;
     private boolean atEnd = false;
     private List<Message> queued = new LinkedList<>();
+
+    public MessageHistory(DiscordAPIImpl api, Group group){
+        this.api = api;
+        this.group = group;
+    }
 
     /**
      * Gets all available Messages. Can be called multiple times and always returns the full set
@@ -69,6 +74,7 @@ public class MessageHistory {
             JSONArray array = new JSONArray(pb.makeRequest());
             for(int i = 0; i < array.length(); i++) {
                 JSONObject content = array.getJSONObject(i);
+
                 //Code from MessagePoll
                 if (content.isNull("author"))
                     continue; //image update event?
@@ -85,7 +91,6 @@ public class MessageHistory {
 
                 MessageImpl msg = new MessageImpl(msgContent, msgId, id, api);
                 msg.setSender(user);
-                msg.setTimestamp(content.getString("timestamp"));
 
                 if (!content.isNull("edited_timestamp"))
                     msg.setEdited(true);

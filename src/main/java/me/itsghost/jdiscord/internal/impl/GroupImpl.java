@@ -8,10 +8,13 @@ import me.itsghost.jdiscord.internal.httprequestbuilders.RequestType;
 import me.itsghost.jdiscord.message.Message;
 import me.itsghost.jdiscord.message.MessageHistory;
 import me.itsghost.jdiscord.talkable.Group;
+import me.itsghost.jdiscord.talkable.GroupUser;
 import me.itsghost.jdiscord.talkable.Talkable;
+import me.itsghost.jdiscord.talkable.User;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +23,6 @@ public class GroupImpl implements Group, Talkable {
     @Getter @Setter private String cid;
     @Getter @Setter private String id;
     @Getter @Setter private String name;
-    @Getter private Map<String, Map<String, Integer>> permsOverride = new HashMap<>();
     private DiscordAPIImpl api;
     private Server server;
 
@@ -42,6 +44,7 @@ public class GroupImpl implements Group, Talkable {
     public Server getServer() {
         return server;
     }
+
 
     @Override
     public MessageHistory getMessageHistory() {
@@ -70,10 +73,8 @@ public class GroupImpl implements Group, Talkable {
         pb.setUrl("https://discordapp.com/api/channels/" + id + "/messages");
 
         String a = pb.makeRequest();
-        if (a != null){
-        	message.setId(new JSONObject(a).getString("id"));
-        	message.setGroupId(id);
-        }
+        if (a != null)
+            return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, api);
 
         return message;
     }
@@ -115,6 +116,10 @@ public class GroupImpl implements Group, Talkable {
             return;
 
         id = new JSONObject(a).getString("id");
+    }
+
+    public GroupUser getGroupUserById(String id) {
+        return getServer().getGroupUserById(id);
     }
 
 }

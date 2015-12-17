@@ -1,8 +1,8 @@
 package me.itsghost.jdiscord.internal.request;
 
 
-import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
+import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.internal.impl.ServerImpl;
 import me.itsghost.jdiscord.internal.impl.VoiceGroupImpl;
 import me.itsghost.jdiscord.internal.request.poll.*;
@@ -114,8 +114,6 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
                     break;
                 case "VOICE_STATE_UPDATE":
                     try{
-                        //The longest password token is shared with the public...
-                        //Nice fucking work discord team.
                         if (key.getString("user_id").equals(api.getSelfInfo().getId())){
                             VoiceGroupImpl voice = api.getVoiceGroupById(key.getString("channel_id"));
                             voice.setSession(key.getString("session_id"));

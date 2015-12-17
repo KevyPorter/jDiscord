@@ -1,9 +1,9 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
 import me.itsghost.jdiscord.Role;
+import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.events.UserJoinedChat;
-import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
 import me.itsghost.jdiscord.internal.impl.UserImpl;
 import me.itsghost.jdiscord.talkable.GroupUser;
 import org.json.JSONObject;
@@ -26,7 +26,7 @@ public class AddUserPoll implements Poll {
         userImpl.setAvatar(user.isNull("avatar") ? "" : "https://cdn.discordapp.com/avatars/" + server.getId() + "/" + user.getString("avatar") + ".jpg");
         userImpl.setAvatarId(user.isNull("avatar") ? "" : server.getId());
 
-        GroupUser gUser = new GroupUser(userImpl,  new ArrayList<>(Arrays.asList(new Role("User", "User", null))), user.getString("discriminator"));
+        GroupUser gUser = new GroupUser(userImpl, user.getString("discriminator"));
 
         server.getConnectedClients().add(gUser);
 

@@ -18,8 +18,7 @@ public class EventManager {
                 try {
                     if (m.getParameterTypes()[0].getName().equals(e.getClass().getName())) {
                         try {
-                            m.setAccessible(true);
-                            m.invoke(ClassO, e);
+                            ClassO.getClass().getDeclaredMethod(m.getName(), e.getClass()).invoke(ClassO, e);
                         } catch (Exception e1) {
                             e1.printStackTrace();
                             System.out.println("Couldn't run event!");

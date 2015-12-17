@@ -1,11 +1,17 @@
 package me.itsghost.jdiscord.internal.request.poll;
 
-import me.itsghost.jdiscord.Server;
+import me.itsghost.jdiscord.events.AddedToServer;
 import me.itsghost.jdiscord.events.ChannelDeletedEvent;
 import me.itsghost.jdiscord.internal.impl.DiscordAPIImpl;
+import me.itsghost.jdiscord.Server;
 import me.itsghost.jdiscord.internal.impl.GroupImpl;
+import me.itsghost.jdiscord.internal.impl.ServerImpl;
 import me.itsghost.jdiscord.internal.impl.UserImpl;
+import me.itsghost.jdiscord.talkable.GroupUser;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class NewContactOrGroupPoll implements Poll {
     private DiscordAPIImpl api;
@@ -21,7 +27,7 @@ public class NewContactOrGroupPoll implements Poll {
 
             JSONObject recp = content.getJSONObject("recipient");
             String id = recp.getString("id");
-            String avatarId = recp.isNull("avatar") ? "" : recp.getString("avatar");
+            String avatarId = recp.getString("avatar");
             String avatar = recp.isNull("avatar") ? "" : "https://cdn.discordapp.com/avatars/" + id + "/" + avatarId + ".jpg";
             String username = recp.getString("username");
 

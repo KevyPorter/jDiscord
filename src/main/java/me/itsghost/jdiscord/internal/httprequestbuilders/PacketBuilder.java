@@ -79,7 +79,7 @@ public class PacketBuilder {
 
             con.setRequestProperty("Content-Type", isForm ? "application/x-www-form-urlencoded" : (file ? "application/octet-stream" : "application/json; charset=utf-8"));
             con.setRequestProperty("Content-Length", Integer.toString(data.getBytes().length));
-            con.setRequestProperty("User-Agent", "0/7.7.0.103// libhttpX.X");
+            con.setRequestProperty("User-Agent", "jDiscord//whatever style this should be//idk version number");
             if (!cookies.equals(""))
                 con.setRequestProperty("Cookie", cookies);
             con.setDoOutput(true);

@@ -77,14 +77,16 @@ public class ExampleListener implements EventListener {
 
 public class Test {
     public static void main(String[] args) {
-        DiscordAPI api = new DiscordAPI("email", "pass").login();
+        DiscordAPI api = new DiscordBuilder("email", "pass").login();
         api.getEventManager().registerListener(new ExampleListener(api)); //Register listener
     }
 }
 ```
 #Shut up and take my money! 
 ###(Now using shaded jar due to compatibility issues with past builds)
+[Latest - Beta] http://itsghost.me/jdiscord.jar
 [Maven](http://itsghost.me/maven)
+
 
 Repository:
 ```
