@@ -5,22 +5,19 @@ This API thrives to be the best Discord API written in Java with features no oth
 [Download](#shut-up-and-take-my-money) with maven
 
 #Features
-- Kicking and banning                   (API exclusive)
-- Profile settings/account settings		(API exclusive)
+- Kicking and banning                  
+- Profile settings/account settings		
 - Message building
-- Online statuses						(This includes your own status! API exclusive)
+- Online statuses
 - Avatars + Roles 
 - DMs
 - Group messaging
 - User talk (edited) event 
 - User join/banned/kicked events
 - Invite joining
+- Salt
 - Much more... 
 
-###TODO
-- Message history         (nearly done)
-- Game status
-- VOIP (Java and C# Host) (currently experimental)
 
 #Events
 - AddedToServer       (AddedToGuildEvent)
